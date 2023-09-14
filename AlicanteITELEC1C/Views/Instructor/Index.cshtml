@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Instructor>;
+<h1>Instructor List</h1>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Employment Status</th>
+        <th>Rank</th>
+        <th>Hiring Date</th>
+        <th>Show Details</th>
+    </tr>
+    @foreach (var instructor in Model)
+    {
+        string status = @instructor.IsTenured == true ? "Permanent" : "Probationary";
+        <tr>
+            <td>@instructor.InstructorId</td>
+            <td>@instructor.InsFirst @instructor.InsLast</td>
+            <td>@status</td>
+            <td>@instructor.InstructorRank</td>
+            <td>@instructor.HiringDate.ToString("MM/dd/yyyy")</td>
+            <td><a class = "btn btn-primary" asp-action="ShowDetail" asp-route-id="@instructor.InstructorId">Show Details</a></td>
+        </tr>
+    }
+</table>
+
+<a class="btn btn-dark" asp-controller="Instructor" asp-action="AddInstructor">Add Instructor</a>
