@@ -11,6 +11,7 @@
         <th>Email</th>
         <th>GPA</th>
         <th>Details</th>
+        <th>Update</th>
     </tr>
     @foreach (var student in Model)
     {
@@ -22,7 +23,7 @@
             <td>@student.Email</td>
             <td>@student.GPA</td>
             <td><a class="btn btn-primary" asp-action="ShowDetail" asp-route-id="@student.Id">Show Details</a></td>
-
+            <td><a class="btn btn-info" asp-action="UpdateStudent" asp-route-id="@student.Id">Update</a></td>
         </tr>
     }
 </table>

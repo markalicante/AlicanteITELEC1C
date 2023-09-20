@@ -9,6 +9,7 @@
         <th>Rank</th>
         <th>Hiring Date</th>
         <th>Show Details</th>
+        <th>Update</th>
     </tr>
     @foreach (var instructor in Model)
     {
@@ -20,6 +21,7 @@
             <td>@instructor.InstructorRank</td>
             <td>@instructor.HiringDate.ToString("MM/dd/yyyy")</td>
             <td><a class = "btn btn-primary" asp-action="ShowDetail" asp-route-id="@instructor.InstructorId">Show Details</a></td>
+            <td><a class = "btn btn-info" asp-action="UpdateInstructor" asp-route-id="@instructor.InstructorId">Update</a></td>
         </tr>
     }
 </table>

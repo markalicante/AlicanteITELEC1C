@@ -51,5 +51,34 @@ namespace AlicanteITELEC1CC.Controllers
             return View("Index", StudentList);
         }
 
+        [HttpGet]
+        public IActionResult UpdateStudent(int id)
+        { 
+            Student? student = StudentList.FirstOrDefault(st => st.Id == id);
+
+            if (student != null)//was a student found?
+                return View(student);
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStudent(Student studentChanges)
+        {
+            Student? student = StudentList.FirstOrDefault(st => st.Id == studentChanges.Id);
+
+            if (student != null)
+            {
+                student.FirstName = studentChanges.FirstName;
+                student.LastName = studentChanges.LastName;
+                student.Email = studentChanges.Email;
+                student.Course = studentChanges.Course;
+                student.GPA = studentChanges.GPA;
+                student.AdmissionDate = studentChanges.AdmissionDate;
+
+            }
+
+            return View("Index",StudentList);
+        }
     }
 }
