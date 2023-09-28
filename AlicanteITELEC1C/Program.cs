@@ -1,7 +1,11 @@
+using AlicanteITELEC1C.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IMyFakeDataService, MyFakeDataService>();//Dummy Data Service
+
 
 var app = builder.Build();
 

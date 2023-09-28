@@ -1,36 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AlicanteITELEC1C.Models;
+using AlicanteITELEC1C.Services;
 
 namespace AlicanteITELEC1C.Controllers
 {
     public class InstructorController : Controller
     {
-        List<Instructor> InstructorList = new List<Instructor>()
-        {
-            new Instructor()
-            {
-                InstructorId = 1, InsFirst = "Gabriel", InsLast = "Montano", HiringDate = DateTime.Parse("2022-08-26"), IsTenured = false, InstructorRank = Rank.Instructor
-            },
-            new Instructor()
-            {
-                InstructorId = 2, InsFirst = "Leo", InsLast = "Lintag", HiringDate = DateTime.Parse("2022-08-07"), IsTenured = true, InstructorRank = Rank.Professor
-            },
-            new Instructor()
-            {
-                InstructorId = 3, InsFirst = "Eugenia", InsLast = "Zhuo", HiringDate = DateTime.Parse("2020-01-25"), IsTenured = true, InstructorRank = Rank.AssociateProfessor
-            }
+        private readonly IMyFakeDataService _dummyData;
 
-        };
+        public InstructorController(IMyFakeDataService dummyData)
+        {
+            _dummyData = dummyData;
+        }
 
         public IActionResult Index()
         {
 
-            return View(InstructorList);
+            return View(_dummyData.InstructorList);
         }
 
         public IActionResult ShowDetail(int id)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(ins => ins.InstructorId == id);
+            Instructor? instructor = _dummyData.InstructorList.FirstOrDefault(ins => ins.InstructorId == id);
 
             if (instructor != null)
                 return View(instructor);
@@ -48,14 +39,14 @@ namespace AlicanteITELEC1C.Controllers
         [HttpPost]
         public IActionResult AddInstructor(Instructor newInstructor)
         {
-            InstructorList.Add(newInstructor);
-            return View("Index", InstructorList);
+            _dummyData.InstructorList.Add(newInstructor);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult UpdateInstructor(int id)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(ins => ins.InstructorId == id);
+            Instructor? instructor = _dummyData.InstructorList.FirstOrDefault(ins => ins.InstructorId == id);
 
             if (instructor != null)//was a instructor found?
                 return View(instructor);
@@ -66,7 +57,7 @@ namespace AlicanteITELEC1C.Controllers
         [HttpPost]
         public IActionResult UpdateInstructor(Instructor instructorChanges)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(ins => ins.InstructorId == instructorChanges.InstructorId);
+            Instructor? instructor = _dummyData.InstructorList.FirstOrDefault(ins => ins.InstructorId == instructorChanges.InstructorId);
 
             if (instructor != null)
             {
@@ -77,7 +68,29 @@ namespace AlicanteITELEC1C.Controllers
                 instructor.IsTenured = instructorChanges.IsTenured;
             }
 
-            return View("Index", InstructorList);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+       public IActionResult DeleteInstructor(int id)
+        {
+            Instructor? instructor = _dummyData.InstructorList.FirstOrDefault(ins => ins.InstructorId == id);
+
+            if (instructor != null)//was a student found?
+                return View(instructor);
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult DeleteInstructor(Student newInstructor)
+        {
+            Instructor? instructor = _dummyData.InstructorList.FirstOrDefault(ins => ins.InstructorId == newInstructor.Id);
+
+            if (instructor != null)//was a student found?
+                _dummyData.InstructorList.Remove(instructor);
+
+            return RedirectToAction("Index");
         }
     }
 }
